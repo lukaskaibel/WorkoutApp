@@ -30,7 +30,7 @@ class WorkoutList: ObservableObject {
     func add(workout: Workout, with image: UIImage? = nil) {
         workouts.append(workout)
         if let image = image {
-            userData.workoutImages[workout] = Image(uiImage: image)
+            userData.add(image: image, for: workout) 
             DispatchQueue.global(qos: .userInitiated).async {
                 DispatchQueue.main.async {
                     userData.workoutColors[workout] = getMainColors(of: image, numberOfColors: 3)

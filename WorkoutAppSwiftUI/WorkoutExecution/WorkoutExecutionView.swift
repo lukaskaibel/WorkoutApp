@@ -35,7 +35,7 @@ struct WorkoutExecutionView: View {
                         } else {
                             GeometryReader { geometry in
                                 ScrollView {
-                                    SetGroupList(workoutEditor: workoutExecution, primaryColor: .mutedWhite, secondaryColor: .secondaryMutedWhite)
+                                    SetGroupList(workoutEditor: workoutExecution, onTapOfSetGroup: { _ in }, primaryColor: .mutedWhite, secondaryColor: .secondaryMutedWhite)
                                 }
                                     .mask(
                                     VStack(spacing: 0) {

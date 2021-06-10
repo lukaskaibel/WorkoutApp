@@ -15,7 +15,7 @@ class WorkoutEditor: ObservableObject {
     @Published var workout: Workout
     @Published var image: UIImage?
    
-    @Published var selectedSetGroupIndex: Int = -1
+    @Published var selectedSetGroupIndex: Int = -1   
     @Published var selectedSetIndex: Int = -1
     @Published var selectedAttribute: SetAttribute = .repetitions
     

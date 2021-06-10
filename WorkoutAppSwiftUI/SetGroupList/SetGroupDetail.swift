@@ -35,7 +35,6 @@ struct SetGroupDetail: View {
                     .foregroundColor(.mutedWhite)
             }.padding()
             .background(Color.translucentDarkGray2)
-            ScrollViewReader { proxy in
                 List {
                     Group {
                         ForEach(setGroup.sets) { set in
@@ -105,16 +104,8 @@ struct SetGroupDetail: View {
                         }.contentShape(Rectangle())
                     }
                     .listRowBackground(Color.clear)
-                }
                 .background(Color.translucentGray)
                 .listStyle(DefaultListStyle())
-                .onAppear() {
-                    if workoutEditor.setSelected {
-                        proxy.scrollTo(workoutEditor.selectedSet, anchor: .top)
-                    }
-                    UITableView.appearance().backgroundColor = UIColor.clear
-                    UITableViewCell.appearance().backgroundColor = UIColor.clear
-                }
             }
         }
     }
@@ -144,7 +135,7 @@ struct ValueWithUnitView: View {
 }
 
 
-struct SetGroupDetailView_Previews: PreviewProvider {
+struct SetGroupDetail_Previews: PreviewProvider {
     static var previews: some View {
         SetGroupDetail(workoutEditor: WorkoutEditor(), setGroup: WorkoutSetGroup())
             .background(Color.darkGray)

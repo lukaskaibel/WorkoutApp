@@ -35,6 +35,7 @@ struct EditWorkoutView: View {
         ZStack {
             NavigationView {
                 ScrollView {
+                    NavigationLink(destination: SetGroupDetailView(workoutEditor: workoutEditor), isActive: $workoutEditor.setGroupSelected, label: { EmptyView() })
                     LazyVStack(spacing: 0) {
                         Spacer(minLength: 20)
                         Section(header: header, footer: footer) {
@@ -51,7 +52,9 @@ struct EditWorkoutView: View {
                             }
                             Divider()
                                 .padding(.leading, 50)
-                            SetGroupList(workoutEditor: workoutEditor)
+                            SetGroupList(workoutEditor: workoutEditor, onTapOfSetGroup: { setGroup in
+                                workoutEditor.selectedSetGroupIndex = workoutEditor.workout.setGroups.firstIndex(of: setGroup)!
+                            })
                         }
                         Spacer(minLength: 100)
                     }
@@ -76,15 +79,6 @@ struct EditWorkoutView: View {
                 }
             }.navigationViewStyle(StackNavigationViewStyle())
             
-            //Set Editor View (edits Attributes of Set)
-            if workoutEditor.setGroupSelected {
-                GeometryReader { geometry in
-                    SmallPopoverBlur(isPresented: $workoutEditor.setGroupSelected, content:
-                        SetGroupDetail(workoutEditor: workoutEditor, setGroup: workoutEditor.selectedSetGroup!)
-                                        .frame(maxHeight: geometry.size.height * 2/3)
-                    )
-                }
-            }
         }.popover(isPresented: $isAdding, content: {
             AddExerciseView(isPresented: $isAdding, exerciseAdder: ExerciseAdder(workoutEditor: workoutEditor))
         })
@@ -97,13 +91,13 @@ struct EditWorkoutView: View {
         //Apples Video Picker View
         .fullScreenCover(isPresented: $addingIntro, content: {
             VideoPickerView(sourceType: .photoLibrary, onVideoPicked: { url in
-                uiData.workoutIntros[workoutEditor.workout] = url
+                uiData.add(intro: url, for: workoutEditor.workout)
             }, maxClipLength: Constant.maxIntroClipLength)
         })
         .fullScreenCover(isPresented: $addingOutro, content: {
             VideoPickerView(sourceType: .photoLibrary, onVideoPicked: { url in
-                uiData.workoutOutros[workoutEditor.workout] = url
-            }, maxClipLength: Constant.maxIntroClipLength)
+                uiData.add(intro: url, for: workoutEditor.workout)
+            }, maxClipLength: Constant.maxOutroClipLength)
         })
     }
     
@@ -209,7 +203,7 @@ struct EditWorkoutView: View {
     
     @ViewBuilder
     var introView: some View {
-        if let url = uiData.workoutIntros[workoutEditor.workout] {
+        if let url = uiData.workoutData[workoutEditor.workout]?.intro {
             LoopingPlayer(url: url, isMuted: true)
         } else {
             Rectangle()
@@ -220,7 +214,7 @@ struct EditWorkoutView: View {
     
     @ViewBuilder
     var outroView: some View {
-        if let url = uiData.workoutOutros[workoutEditor.workout] {
+        if let url = uiData.workoutData[workoutEditor.workout]?.outro {
             LoopingPlayer(url: url, isMuted: true)
         } else {
             Rectangle()

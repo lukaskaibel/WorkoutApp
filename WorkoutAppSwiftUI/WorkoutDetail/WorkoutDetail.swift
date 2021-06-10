@@ -58,7 +58,7 @@ struct WorkoutDetailView: View {
                         .background(Color.translucentGray)
                         .cornerRadius(10)
                     }.padding(.horizontal)
-                    SetGroupList(workoutEditor: workoutExecution, primaryColor: .mutedWhite, secondaryColor: .secondaryMutedWhite)
+                    SetGroupList(workoutEditor: workoutExecution, onTapOfSetGroup: { _ in }, primaryColor: .mutedWhite, secondaryColor: .secondaryMutedWhite)
                 }.padding(.top, 60)
                 VStack {
                     HStack {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVKit
 
 
 extension Image {
@@ -32,10 +33,11 @@ extension Image {
     static var note: Image { Image(systemName: "music.note") }
     static var edit: Image { Image(systemName: "pencil") }
     
+    static var video: Image { Image(systemName: "video.fill") }
     static var videoCircle: Image { Image(systemName: "video.circle.fill") }
     static var cameraCircle: Image { Image(systemName: "camera.circle.fill") }
 
-    
+    static var dots: Image { Image(systemName: "ellipsis") }
     
     static var circle: Image { Image(systemName: "circle") }
     static var checkmarkCircle: Image { Image(systemName: "checkmark.circle.fill") }
@@ -56,6 +58,30 @@ extension Image {
         case .weight: return .weight
         case .restAfter: return .hourglass
         }
+    }
+    
+}
+
+
+extension Image {
+    
+    static func imageFromVideo(url: URL, at time: TimeInterval) -> Image? {
+        let asset = AVURLAsset(url: url)
+
+        let assetIG = AVAssetImageGenerator(asset: asset)
+        assetIG.appliesPreferredTrackTransform = true
+        assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+
+        let cmTime = CMTime(seconds: time, preferredTimescale: 60)
+        let thumbnailImageRef: CGImage
+        do {
+            thumbnailImageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+        } catch let error {
+            print("Error: \(error)")
+            return nil
+        }
+
+        return Image(uiImage: UIImage(cgImage: thumbnailImageRef))
     }
     
 }

@@ -106,3 +106,18 @@ extension WorkoutSetGroup {
     }
     
 }
+
+
+extension WorkoutSetGroup {
+    
+    static func testSetGroup() -> WorkoutSetGroup {
+        var setGroup = WorkoutSetGroup()
+        let exercise = Exercise.all().first!
+        for _ in 0..<5 {
+            let set = WorkoutSet(exercise)
+            setGroup.add(set: set)
+        }
+        return setGroup
+    }
+    
+}

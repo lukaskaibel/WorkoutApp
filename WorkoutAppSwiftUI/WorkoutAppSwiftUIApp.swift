@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 
 var userData = UserData()
@@ -13,6 +14,10 @@ var userData = UserData()
 @main
 struct WorkoutAppSwiftUIApp: App {
     
+    init() {
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
             //ColorGetterView(colorGetter: ColorGetter())
@@ -20,4 +25,5 @@ struct WorkoutAppSwiftUIApp: App {
             //VideoPickerView(sourceType: .photoLibrary, onVideoPicked: { url in  print(url.path) })
         }
     }
+    
 }
